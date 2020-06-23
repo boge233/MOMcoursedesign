@@ -14,7 +14,6 @@ e1v = -ve1;
 e1p =  point - pointtable(edge(1),:);
 e1e2 = pointtable(edge(2),:) - pointtable(edge(1),:);
 tag2 = cross(e1p,e1e2)*cross(e1v,e1e2)';
-
 %% 判断点是否在负三角形内
 mvp = point - pointtable(vertexp,:);
 mve1 = pointtable(edge(1),:) - pointtable(vertexm,:);
@@ -28,15 +27,14 @@ tag4 = cross(me1p,me1e2)*cross(me1v,me1e2)';
 if tag1>=0 && tag2>=0
     A = abs(cross(e1v,e1e2))/2;
     pv = -vp;
-    current = 0.5 * pv ;
+    current =  pv ;
     gradrwg = -1;
-elseif tag3>=0 && tag4>=0
-    A = abs(cross(melv,me1e2))/2;
-    current = 0.5 * mvp ;
+   % disp('正三角')
+else 
+    A = abs(cross(me1v,me1e2))/2;
+    current =  mvp ;
     gradrwg = 1;
-else
-    current = [0,0,0];
-    gradrwg = 0;
+  %  disp('负三角')
 end
 rwg1 = current;
 end

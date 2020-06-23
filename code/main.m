@@ -21,3 +21,21 @@ for i =1:m
     ci = intersect(ri1,ri2);
     trp = [trp;ci'];%三角形对数组,两行n列，两行分别为正负三角形在连接表中的索引，并且与公共边顺次对应。
 end
+global triangletable
+global pointtable
+triangletable = model.ConnectivityList;
+pointtable = model.Points;
+global test;
+test = 0;
+Z = zeros(m,m);
+V = zeros(m,1);
+for i = 1:m
+    V(i) = excitation(0,edgetable(i,:),trp(i,:));
+    
+end
+for i = 1:m
+    for j = 1:m
+        Z(i,j) = integral(edgetable(i,:),edgetable(j,:),trp(i,:),trp(j,:));
+    end
+end
+K = Z\V;
