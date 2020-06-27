@@ -28,15 +28,21 @@ for i= 1:4
     point2(i,:) =  gamma(i)*point(a2,:)+alpha(i)*point(b2,:)+beta(i)*point(c2,:);
 end
 I = 0;
-A1 = norm(cross((point(a1,:)-point(b1,:)),(point(c1,:)-point(b1,:))))/2;
-A2 = norm(cross((point(a2,:)-point(b2,:)),(point(c2,:)-point(b2,:))))/2;
+%A1 = norm(cross((point(a1,:)-point(b1,:)),(point(c1,:)-point(b1,:))))/2;
+%A2 = norm(cross((point(a2,:)-point(b2,:)),(point(c2,:)-point(b2,:))))/2;
 for i = 1:4
     [rou1,s1] = rwg(point1(i,:),edge,triangletable(trip(1),:),triangletable(trip(2),:),pointtable);
     [rou2,s2] = rwg(point2(i,:),edge,triangletable(trip(1),:),triangletable(trip(2),:),pointtable);
     Lm = pointtable(edge(1),:) - pointtable(edge(2),:);
     Lm = norm(Lm);
-    I = I + Lm/(2*A1)*[1,0,0]*rou1'*weight(i)*exp(j*k*[0,0,1]*point1(i,:)'+initphase*j);
-    I = I + Lm/(2*A2)*[1,0,0]*rou2'*weight(i)*exp(j*k*[0,0,1]*point2(i,:)'+initphase*j);%极化为x方向
+    I = I + Lm/2*[1,0,0]*rou1'*weight(i)*exp(j*k*[0,0,1]*point1(i,:)'+initphase*j);
+    I = I + Lm/2*[1,0,0]*rou2'*weight(i)*exp(j*k*[0,0,1]*point2(i,:)'+initphase*j);%极化为x方向
+    if(I == 0)
+    disp('**********');
+    disp(rou1);
+    disp(rou2);
+    disp('**********');
+    end
 end
 output = I;
 end

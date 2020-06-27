@@ -6,14 +6,11 @@ function [output] = integral(edge1,edge2,trib,trit)
 %pointtable : 点的表
 %edge1 : 基函数三角形公共边在pointtable中的索引，由两个点的索引构成
 %edge2  :  势函数三角形公共边在pointtable中的索引，有两个点的索引构成
-global pointtable;
-global triangletable;
-point = pointtable;
 jc = complex(0,1);
-global epsilon
-global mu
-global k
-global w
+load('PC.mat');
+load('trit.mat');
+load('pointt.mat');
+point = pointtable;
 %% 确定积分点 采用四点积分
 alpha = [0.3333 0.6 0.2 0.2];
 beta = [0.3333 0.2 0.6 0.2];
@@ -59,28 +56,28 @@ if length(overlap) == 0
         for z = 1:4
             [rou1,s1] = rwg(point1(i,:),edge1,triangletable(trib(1),:),triangletable(trib(2),:),pointtable);
             [rou2,s2] = rwg(point3(z,:),edge2,triangletable(trit(1),:),triangletable(trit(2),:),pointtable);
-            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*mu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point1(i,:)-point3(z,:)))/norm(point1(i,:)-point3(z,:));
+            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*miu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point1(i,:)-point3(z,:)))/norm(point1(i,:)-point3(z,:));
         end
     end
     for i = 1:4
         for z = 1:4
             [rou1,s1] = rwg(point1(i,:),edge1,triangletable(trib(1),:),triangletable(trib(2),:),pointtable);
             [rou2,s2] = rwg(point4(z,:),edge2,triangletable(trit(1),:),triangletable(trit(2),:),pointtable);
-            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*mu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point1(i,:)-point4(z,:)))/norm(point1(i,:)-point4(z,:));
+            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*miu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point1(i,:)-point4(z,:)))/norm(point1(i,:)-point4(z,:));
         end
     end
     for i = 1:4
         for z = 1:4
             [rou1,s1] = rwg(point2(i,:),edge1,triangletable(trib(1),:),triangletable(trib(2),:),pointtable);
             [rou2,s2] = rwg(point3(z,:),edge2,triangletable(trit(1),:),triangletable(trit(2),:),pointtable);
-            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*mu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point2(i,:)-point3(z,:)))/norm(point2(i,:)-point3(z,:));
+            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*miu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point2(i,:)-point3(z,:)))/norm(point2(i,:)-point3(z,:));
         end
     end
     for i = 1:4
         for z = 1:4
             [rou1,s1] = rwg(point2(i,:),edge1,triangletable(trib(1),:),triangletable(trib(2),:),pointtable);
             [rou2,s2] = rwg(point4(z,:),edge2,triangletable(trit(1),:),triangletable(trit(2),:),pointtable);
-            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*mu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point2(i,:)-point4(z,:)))/norm(point2(i,:)-point4(z,:));
+            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*miu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point2(i,:)-point4(z,:)))/norm(point2(i,:)-point4(z,:));
         end
     end    
     I = Ippmm * Lm*Ln/(4*pi);
@@ -109,9 +106,9 @@ elseif length(overlap) == 1
                     edgep1 = pointtable(edge1(1),:) - pointtable(edge1(2),:);
                     edgep2 = pointtable(edge2(1),:) - pointtable(edge2(2),:);
                     if page1 == index1&&page2 == index2                        
-                        Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*mu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*jc*k*(-1)*norm(edgep1)*norm(edgep2)/(4*pi);
+                        Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*miu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*jc*k*(-1)*norm(edgep1)*norm(edgep2)/(4*pi);
                     else
-                        Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*mu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(pointb(i,:,page1)-pointt(z,:,page2)))/norm(pointb(i,:,page1)-pointt(z,:,page2))*norm(edgep1)*norm(edgep2)/(4*pi);
+                        Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*miu/4 * rou1*rou2'-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(pointb(i,:,page1)-pointt(z,:,page2)))/norm(pointb(i,:,page1)-pointt(z,:,page2))*norm(edgep1)*norm(edgep2)/(4*pi);
                     end
                 end
             end
@@ -126,7 +123,7 @@ else
         for z = 1:4
             [rou1,s1] = rwg(point1(i,:),edge1,triangletable(trib(1),:),triangletable(trib(2),:),pointtable);
             [rou2,s2] = rwg(point3(z,:),edge2,triangletable(trit(1),:),triangletable(trit(2),:),pointtable);
-            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*mu/4 * rou1*(rou2') -s1*s2*jc/(w*epsilon))*(-jc*k)*norm(edgep1)*norm(edgep2)/(4*pi);
+            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*miu/4 * rou1*(rou2') -s1*s2*jc/(w*epsilon))*(-jc*k)*norm(edgep1)*norm(edgep2)/(4*pi);
         end
     end
     vn = pointtable(setdiff(triangletable(trit(1),:),edge1),:);
@@ -139,14 +136,14 @@ else
         for z = 1:4
             [rou1,s1] = rwg(point1(i,:),edge1,triangletable(trib(1),:),triangletable(trib(2),:),pointtable);
             [rou2,s2] = rwg(point4(z,:),edge2,triangletable(trit(1),:),triangletable(trit(2),:),pointtable);
-            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*mu/4 * (rou1*rou2')-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point1(i,:)-point4(z,:)))/norm(point1(i,:)-point4(z,:))*norm(edgep1)*norm(edgep2)/(4*pi);
+            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*miu/4 * (rou1*rou2')-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point1(i,:)-point4(z,:)))/norm(point1(i,:)-point4(z,:))*norm(edgep1)*norm(edgep2)/(4*pi);
         end
     end
     for i = 1:4
         for z = 1:4
             [rou1,s1] = rwg(point2(i,:),edge1,triangletable(trib(1),:),triangletable(trib(2),:),pointtable);
             [rou2,s2] = rwg(point3(z,:),edge2,triangletable(trit(1),:),triangletable(trit(2),:),pointtable);
-            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*mu/4 * (rou1*rou2')-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point2(i,:)-point3(z,:)))/norm(point2(i,:)-point3(z,:))*norm(edgep1)*norm(edgep2)/(4*pi);
+            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*miu/4 * (rou1*rou2')-s1*s2*jc/(w*epsilon))*exp(-jc*k*norm(point2(i,:)-point3(z,:)))/norm(point2(i,:)-point3(z,:))*norm(edgep1)*norm(edgep2)/(4*pi);
             
         end
     end
@@ -154,7 +151,7 @@ else
         for z = 1:4
             [rou1,s1] = rwg(point2(i,:),edge1,triangletable(trib(1),:),triangletable(trib(2),:),pointtable);
             [rou2,s2] = rwg(point4(z,:),edge2,triangletable(trit(1),:),triangletable(trit(2),:),pointtable);
-            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*mu/4 * (rou1*rou2')-s1*s2*jc/(w*epsilon))*(-jc*k)*norm(edgep1)*norm(edgep2)/(4*pi);
+            Ippmm = Ippmm + weight(i)*weight(z)* (jc*w*miu/4 * (rou1*rou2')-s1*s2*jc/(w*epsilon))*(-jc*k)*norm(edgep1)*norm(edgep2)/(4*pi);
         end
     end
     vn = pointtable(setdiff(triangletable(trit(2),:),edge1),:);
@@ -169,9 +166,7 @@ end
 end
 function [I1,I2] = analyI12(v1,v2,v3,vn,vm,Lm,Ln,sign)
 %输入为点本身 sign是I1的符号
-global w;
-global mu;
-global epsilon;
+load('PC.mat');
 syms a b c d ;
 ja = complex(0,1);
  %% 初始计算公式表达式
@@ -198,7 +193,7 @@ ja = complex(0,1);
  l1_pn = eval(l1_p);
  I2 = eval(I2_f);
  %为了计算其他的项需要将v2 v3调换位置，表现在这里就是交换a，c的值，
- I2 = ja/(w*epsilon)*Lm*Ln/(4*pi)*I2*sign; 
+ I2 = ja/(w*epsilon)*Lm*Ln/(4*pi)*I2; 
  temp = a;
  a = c;
  c = temp;
@@ -210,6 +205,6 @@ ja = complex(0,1);
  a3n = v3*vn' ;a3m = v3*vm';amn = vm*vn' ;
  I1 = l1_l1pn*(a11-2*a12+a22) + l1_l2pn*(a11 -  a13 -a12 +a23) +l2_l2pn*(a11 - 2*a13 +a33) + l1p_l2n*(a11-a12-a13+a23)+...
      l1_pn*(-a11+a1n+a12-a2n)+l2_pn*(-a11+a1n+a13-a3n)+l1_pn*(-a11+a1m+a12-a2m)+l2_pn*(-a11+a1m+a13-a3m)+a11-a1n-a1m+amn ;
- I1 = ja*w*mu*Lm*Ln/(4*pi)*I1;
+ I1 = ja*w*miu*Lm*Ln/(4*pi)*I1;
  I1 = I1*sign;
 end
